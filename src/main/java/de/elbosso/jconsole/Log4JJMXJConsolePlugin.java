@@ -38,7 +38,9 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 	public Log4JJMXJConsolePlugin()
 	{
 		TableView tableView=new TableView();
-		tabs.put("key", tableView);
+		tabs.put("table", tableView);
+		TextAreaView textAreaView=new TextAreaView();
+		tabs.put("textArea", textAreaView);
 	}
 
 	/**

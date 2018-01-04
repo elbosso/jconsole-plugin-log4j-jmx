@@ -6,10 +6,13 @@ public class Helper
 	{
 		TableView tableView=new TableView();
 		System.out.println("TableView created");
+		TextAreaView textAreaView=new TextAreaView();
+		System.out.println("TextAreaView created");
 		//Log4JJMXJConsolePlugin plugin=new Log4JJMXJConsolePlugin();
 		//plugin.getTabs();
 		javax.swing.JFrame f=new javax.swing.JFrame();
-		f.setContentPane(new javax.swing.JScrollPane(tableView));
+		f.setContentPane(tableView);
+		f.setContentPane(textAreaView);
 		f.pack();
 		f.setLocation(0,0);
 		f.setSize(1024,700);

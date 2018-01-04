@@ -8,6 +8,6 @@ public class TableView extends javax.swing.JPanel
 	{
 		super(new java.awt.BorderLayout());
 		table=new de.netsysit.ui.components.SophisticatedRenderingTable();
-		add(table);
+		add(new javax.swing.JScrollPane(table));
 	}
 }
