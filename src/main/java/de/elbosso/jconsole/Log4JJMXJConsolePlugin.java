@@ -1,4 +1,8 @@
 package de.elbosso.jconsole;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+
 /*
 Copyright (c) 2012-2018.
 Juergen Key. Alle Rechte vorbehalten.
@@ -35,6 +39,7 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 	private final java.util.Map<String, javax.swing.JPanel> tabs = new java.util.LinkedHashMap<String, javax.swing.JPanel>();
 	private final TableView tableView;
 	private final TextAreaView textAreaView;
+	private javax.swing.Action pauseAction;
 
 	static{
 		try
@@ -50,6 +55,10 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 			iconFallbacks.setProperty("toolbarButtonGraphics/general/Bookmarks24.gif", "action/drawable-mdpi/ic_bookmark_border_black_48dp.png");
 			iconFallbacks.setProperty("toolbarButtonGraphics/general/Find24.gif", "action/drawable-mdpi/ic_search_black_48dp.png");
 			iconFallbacks.setProperty("de/netsysit/ressources/gfx/common/HighlightSelection24.gif", "content/drawable-mdpi/ic_select_all_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/media/Pause24.gif", "av/drawable-mdpi/ic_pause_circle_outline_black_48dp.png");
+//			iconFallbacks.setProperty("toolbarButtonGraphics/media/Pause24.gif", "av/drawable-mdpi/ic_pause_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/navigation/Down24.gif", "navigation/drawable-mdpi/ic_arrow_downward_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/navigation/Up24.gif", "navigation/drawable-mdpi/ic_arrow_upward_black_48dp.png");
 			de.netsysit.util.ResourceLoader.configure(iconFallbacks);
 		}
 		catch(java.io.IOException ioexp)
@@ -64,8 +73,21 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 		tabs.put("table", tableView);
 		textAreaView=new TextAreaView();
 		tabs.put("textArea", textAreaView);
+		createActions();
+		textAreaView.addToToolbar(pauseAction);
 	}
-
+	private void createActions()
+	{
+		pauseAction=new javax.swing.AbstractAction(null,new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("toolbarButtonGraphics/media/Pause24.gif")))
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				textAreaView.setPaused(((java.lang.Boolean)pauseAction.getValue(Action.SELECTED_KEY)).booleanValue());
+			}
+		};
+		pauseAction.putValue(Action.SELECTED_KEY, Boolean.FALSE);
+	}
 	/**
 	 * {@inheritDoc}
 	 */

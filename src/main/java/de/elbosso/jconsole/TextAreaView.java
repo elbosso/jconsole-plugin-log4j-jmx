@@ -5,6 +5,7 @@ import javax.management.Notification;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class TextAreaView extends javax.swing.JPanel implements javax.management.NotificationListener
 {
@@ -26,13 +27,16 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 	};
 	private org.syntax.jedit.SyntaxDocument doc;
 	private de.netsysit.ui.text.TextEditor ed;
-	private boolean appendNextLine;
-	private boolean scrollLock;
 	private final javax.swing.JLabel statusLabel;
+	private AbstractAction scrollLockAction;
+	private AbstractAction appendNextLineAction;
+	private javax.swing.JToolBar tb;
+	private boolean paused;
 
 	TextAreaView()
 	{
 		super(new java.awt.BorderLayout());
+		createActions();
 		statusLabel=new javax.swing.JLabel("not Connected!");
 		add(statusLabel, BorderLayout.SOUTH);
 		de.netsysit.ui.text.AugmentedJEditTextArea ta=new de.netsysit.ui.text.AugmentedJEditTextArea();
@@ -93,7 +97,7 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 		catch(java.lang.Throwable exp)
 		{
 		}
-		javax.swing.JToolBar tb=new de.netsysit.ui.components.AdaptiveToolBar();
+		tb=new de.netsysit.ui.components.AdaptiveToolBar();
 		tb.setFloatable(false);
 		tb.add(ed.getSaveAction());
 		tb.add(ed.getSaveAsAction());
@@ -112,7 +116,60 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 		tb.add(ed.getGotoPreviousBookmarkAction());
 		tb.add(ed.getToggleBookmarkAction());
 		tb.add(ed.getGotoNextBookmarkAction());
+		tb.addSeparator();
+		javax.swing.JToggleButton toggle=new javax.swing.JToggleButton(scrollLockAction);
+		toggle.setSelectedIcon(new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("action/drawable-mdpi/ic_lock_black_48dp.png")));
+		tb.add(toggle);
+		toggle=new javax.swing.JToggleButton(appendNextLineAction);
+		toggle.setSelectedIcon(new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("toolbarButtonGraphics/navigation/Down24.gif")));
+		tb.add(toggle);
 		add(tb, BorderLayout.NORTH);
+	}
+	void addToToolbar(javax.swing.JComponent comp)
+	{
+		tb.add(comp);
+	}
+	void addToToolbar(javax.swing.Action action)
+	{
+		tb.add(action);
+	}
+	void addSeparatorToToolbar()
+	{
+		tb.addSeparator();
+	}
+	private void createActions()
+	{
+		scrollLockAction=new javax.swing.AbstractAction(null,new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("action/drawable-mdpi/ic_lock_open_black_48dp.png")))
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				//setScrollLock(((java.lang.Boolean)getValue(Action.SELECTED_KEY)).booleanValue());
+			}
+		};
+		scrollLockAction.putValue(Action.SELECTED_KEY, Boolean.FALSE);
+		appendNextLineAction=new javax.swing.AbstractAction(null,new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("toolbarButtonGraphics/navigation/Up24.gif")))
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				javax.swing.SwingUtilities.invokeLater(new java.lang.Runnable()
+				{
+					public void run()
+					{
+						try
+						{
+							ed.clear();
+						} catch (BadLocationException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				});
+//				setAppendNextLine(((java.lang.Boolean)getValue(Action.SELECTED_KEY)).booleanValue());
+			}
+		};
+		appendNextLineAction.putValue(Action.SELECTED_KEY, Boolean.FALSE);
 	}
 
 	void setStatus(java.lang.String newStatus)
@@ -122,44 +179,29 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 
 	public synchronized boolean isAppendNextLine()
 	{
-		return appendNextLine;
-	}
-
-	public synchronized void setAppendNextLine(boolean appendNextLine)
-	{
-		if(this.appendNextLine!=appendNextLine)
-		{
-			javax.swing.SwingUtilities.invokeLater(new java.lang.Runnable()
-			{
-				public void run()
-				{
-					try
-					{
-						ed.clear();
-					} catch (BadLocationException e)
-					{
-						e.printStackTrace();
-					}
-				}
-			});
-		}
-		this.appendNextLine = appendNextLine;
+		return ((java.lang.Boolean)appendNextLineAction.getValue(Action.SELECTED_KEY)).booleanValue();
 	}
 
 	public synchronized boolean isScrollLock()
 	{
-		return scrollLock;
+		return ((java.lang.Boolean)scrollLockAction.getValue(Action.SELECTED_KEY)).booleanValue();
 	}
 
-	public synchronized void setScrollLock(boolean scrollLock)
+	public synchronized boolean isPaused()
 	{
-		this.scrollLock = scrollLock;
+		return paused;
+	}
+
+	public void setPaused(boolean paused)
+	{
+		this.paused = paused;
 	}
 
 	@Override
 	public void handleNotification(Notification notification, Object handback)
 	{
-		javax.swing.SwingUtilities.invokeLater(new LogRunnable(notification.getMessage()));
+		if(isPaused()==false)
+			javax.swing.SwingUtilities.invokeLater(new LogRunnable(notification.getMessage()));
 	}
 	private class LogRunnable extends java.lang.Object implements java.lang.Runnable
 	{
