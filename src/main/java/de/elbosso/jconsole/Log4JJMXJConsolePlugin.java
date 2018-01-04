@@ -32,14 +32,37 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugin
 {
 
-	final java.util.Map<String, javax.swing.JPanel> tabs = new java.util.LinkedHashMap<String, javax.swing.JPanel>();
+	private final java.util.Map<String, javax.swing.JPanel> tabs = new java.util.LinkedHashMap<String, javax.swing.JPanel>();
+	private final TableView tableView;
+	private final TextAreaView textAreaView;
 
+	static{
+		try
+		{
+			java.util.Properties iconFallbacks = new java.util.Properties();
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/Save24.gif", "device/drawable-mdpi/ic_sd_storage_black_48dp.png");
+//			iconFallbacks.setProperty("toolbarButtonGraphics/general/SaveAs24.gif", "device/drawable-mdpi/ic_sd_storage_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/Delete16.gif", "action/drawable-mdpi/ic_delete_black_36dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/Delete24.gif", "action/drawable-mdpi/ic_delete_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/Cut24.gif", "content/drawable-mdpi/ic_content_cut_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/Copy24.gif", "content/drawable-mdpi/ic_content_copy_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/Paste24.gif", "content/drawable-mdpi/ic_content_paste_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/Bookmarks24.gif", "action/drawable-mdpi/ic_bookmark_border_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/Find24.gif", "action/drawable-mdpi/ic_search_black_48dp.png");
+			iconFallbacks.setProperty("de/netsysit/ressources/gfx/common/HighlightSelection24.gif", "content/drawable-mdpi/ic_select_all_black_48dp.png");
+			de.netsysit.util.ResourceLoader.configure(iconFallbacks);
+		}
+		catch(java.io.IOException ioexp)
+		{
+			ioexp.printStackTrace();
+		}
+	}
 	
 	public Log4JJMXJConsolePlugin()
 	{
-		TableView tableView=new TableView();
+		tableView=new TableView();
 		tabs.put("table", tableView);
-		TextAreaView textAreaView=new TextAreaView();
+		textAreaView=new TextAreaView();
 		tabs.put("textArea", textAreaView);
 	}
 
@@ -64,8 +87,26 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 
 			default:
 				javax.management.MBeanServerConnection connection = getContext().getMBeanServerConnection();
-return null;
-//				return contexts.isEmpty() ? null : new Updater();
+				try
+				{
+					javax.management.ObjectName name = new javax.management.ObjectName("jmxlogger:type=LogEmitter");
+					try
+					{
+						connection.addNotificationListener(name, tableView, null, null);
+						tableView.setStatus(null);
+						connection.addNotificationListener(name, textAreaView, null, null);
+						textAreaView.setStatus(null);
+					}
+					catch(javax.management.InstanceNotFoundException exp)
+					{
+
+					}
+				}
+				catch(java.lang.Throwable t)
+				{
+					t.printStackTrace();
+				}
+				return new Updater();
 		}
 	}
 

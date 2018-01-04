@@ -125,6 +125,7 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 	</properties>
 
 	<repositories>
+        <!--remote-->
 		<repository>
 			<releases>
 				<enabled>true</enabled>
@@ -136,6 +137,16 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 			<url>http://elbosso.github.io/maven2</url>
 			<layout>default</layout>
 		</repository>
+        <!--local-->
+        <!--repository>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </releases>
+            <id>local-maven-repo</id>
+            <url>file:////home/elbosso/work/elbosso.github.io/maven2</url>
+        </repository-->
 		<repository>
 			<id>central</id>
 			<url>http://repo1.maven.org/maven2</url>
@@ -184,6 +195,11 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 		<dependency>
 			<groupId>de.elbosso</groupId>
 			<artifactId>db_i18n</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>de.elbosso</groupId>
+			<artifactId>materialgfx</artifactId>
 			<version>0.1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
