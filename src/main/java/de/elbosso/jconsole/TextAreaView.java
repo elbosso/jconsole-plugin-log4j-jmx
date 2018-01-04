@@ -32,6 +32,8 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 	private AbstractAction appendNextLineAction;
 	private javax.swing.JToolBar tb;
 	private boolean paused;
+	private long lastUpdate=System.currentTimeMillis();
+	private java.util.LinkedList<java.lang.String> latch=new java.util.LinkedList();
 
 	TextAreaView()
 	{
@@ -159,6 +161,7 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 					{
 						try
 						{
+							latch.clear();
 							ed.clear();
 						} catch (BadLocationException e)
 						{
@@ -201,30 +204,49 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 	public void handleNotification(Notification notification, Object handback)
 	{
 		if(isPaused()==false)
-			javax.swing.SwingUtilities.invokeLater(new LogRunnable(notification.getMessage()));
+		{
+			if(isAppendNextLine())
+				latch.addLast(notification.getMessage());
+			else
+				latch.addFirst(notification.getMessage());
+			long now=System.currentTimeMillis();
+			if(now-lastUpdate>1000)
+			{
+				lastUpdate=now;
+				java.util.List<java.lang.String> toRender=new java.util.LinkedList(latch);
+				latch.clear();
+				javax.swing.SwingUtilities.invokeLater(new LogRunnable(toRender));
+			}
+		}
 	}
 	private class LogRunnable extends java.lang.Object implements java.lang.Runnable
 	{
-		private final java.lang.String le;
+		private final java.util.List<java.lang.String> le;
 
-		public LogRunnable(java.lang.String le)
+		public LogRunnable(java.util.List<java.lang.String> le)
 		{
 			super();
-			this.le = le;
+			this.le =  le;
 		}
 		public void run()
 		{
 			try
 			{
+				java.lang.StringBuffer buf=new java.lang.StringBuffer();
+				for(java.lang.String l:le)
+				{
+					buf.append(l);
+				}
+				java.lang.String bufs=buf.toString();
 				if(isAppendNextLine())
 				{
-					doc.insertString(ed.getTextField().getDocumentLength(), le, null);
+					doc.insertString(ed.getTextField().getDocumentLength(), bufs, null);
 					if(isScrollLock()==false)
 						ed.getTextField().setCaretPosition(ed.getTextField().getLineStartOffset(ed.getTextField().getCaretLine()));
 				}
 				else
 				{
-					doc.insertString(0, le, null);
+					doc.insertString(0, bufs, null);
 					if(isScrollLock()==false)
 						ed.getTextField().setCaretPosition(0);
 				}

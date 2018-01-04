@@ -40,6 +40,7 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 	private final TableView tableView;
 	private final TextAreaView textAreaView;
 	private javax.swing.Action pauseAction;
+	private boolean connected;
 
 	static{
 		try
@@ -105,30 +106,35 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 		switch (getContext().getConnectionState()) {
 			case CONNECTING:
 			case DISCONNECTED:
+				connected=false;
 				return null;
 
 			default:
-				javax.management.MBeanServerConnection connection = getContext().getMBeanServerConnection();
-				try
+				if(connected==false)
 				{
-					javax.management.ObjectName name = new javax.management.ObjectName("jmxlogger:type=LogEmitter");
+					javax.management.MBeanServerConnection connection = getContext().getMBeanServerConnection();
 					try
 					{
-						connection.addNotificationListener(name, tableView, null, null);
-						tableView.setStatus(null);
-						connection.addNotificationListener(name, textAreaView, null, null);
-						textAreaView.setStatus(null);
-					}
-					catch(javax.management.InstanceNotFoundException exp)
-					{
+						javax.management.ObjectName name = new javax.management.ObjectName("jmxlogger:type=LogEmitter");
+						try
+						{
+							connection.addNotificationListener(name, tableView, null, null);
+							tableView.setStatus(null);
+							connection.addNotificationListener(name, textAreaView, null, null);
+							textAreaView.setStatus(null);
+							connected = true;
+						} catch (javax.management.InstanceNotFoundException exp)
+						{
 
+						}
+					} catch (java.lang.Throwable t)
+					{
+						t.printStackTrace();
 					}
+					return new Updater();
 				}
-				catch(java.lang.Throwable t)
-				{
-					t.printStackTrace();
-				}
-				return new Updater();
+				else
+					return null;
 		}
 	}
 
