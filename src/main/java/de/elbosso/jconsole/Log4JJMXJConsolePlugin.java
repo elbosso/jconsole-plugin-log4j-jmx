@@ -60,6 +60,7 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 //			iconFallbacks.setProperty("toolbarButtonGraphics/media/Pause24.gif", "av/drawable-mdpi/ic_pause_black_48dp.png");
 			iconFallbacks.setProperty("toolbarButtonGraphics/navigation/Down24.gif", "navigation/drawable-mdpi/ic_arrow_downward_black_48dp.png");
 			iconFallbacks.setProperty("toolbarButtonGraphics/navigation/Up24.gif", "navigation/drawable-mdpi/ic_arrow_upward_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/Preferences24.gif","image/drawable-mdpi/ic_tune_black_48dp.png");
 			de.netsysit.util.ResourceLoader.configure(iconFallbacks);
 		}
 		catch(java.io.IOException ioexp)

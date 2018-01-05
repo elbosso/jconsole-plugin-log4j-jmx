@@ -31,10 +31,14 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 	private final javax.swing.JLabel statusLabel;
 	private AbstractAction scrollLockAction;
 	private AbstractAction appendNextLineAction;
+	private AbstractAction configAction;
 	private javax.swing.JToolBar tb;
 	private boolean paused;
 	private long lastUpdate=System.currentTimeMillis();
 	private java.util.LinkedList<java.lang.String> latch=new java.util.LinkedList();
+	private de.netsysit.ui.dialog.GeneralPurposeInfoDialog gpid;
+	private javax.swing.JPanel preferencesPanel;
+	private final LevelModel levelModel=new LevelModel();
 
 	TextAreaView()
 	{
@@ -127,6 +131,7 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 		toggle=new javax.swing.JToggleButton(appendNextLineAction);
 		toggle.setSelectedIcon((de.netsysit.util.ResourceLoader.getIcon("toolbarButtonGraphics/navigation/Down24.gif")));
 		tb.add(toggle);
+		tb.add(configAction);
 		add(tb, BorderLayout.NORTH);
 	}
 	void addToToolbar(javax.swing.JComponent comp)
@@ -175,6 +180,21 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 			}
 		};
 		appendNextLineAction.putValue(Action.SELECTED_KEY, Boolean.FALSE);
+		configAction=new javax.swing.AbstractAction(null,(de.netsysit.util.ResourceLoader.getIcon("toolbarButtonGraphics/general/Preferences24.gif")))
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				if(gpid==null)
+				{
+					gpid=de.netsysit.ui.dialog.GeneralPurposeInfoDialog.create(TextAreaView.this,"Preferences");
+					preferencesPanel=new javax.swing.JPanel(new java.awt.BorderLayout());
+					javax.swing.JTable t=new javax.swing.JTable(levelModel);
+					preferencesPanel.add(new javax.swing.JScrollPane(t), BorderLayout.NORTH);
+				}
+				gpid.showDialog(preferencesPanel);
+			}
+		};
 	}
 
 	void setStatus(java.lang.String newStatus)
@@ -205,22 +225,34 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 	@Override
 	public void handleNotification(Notification notification, Object handback)
 	{
-		java.lang.String msg=notification.getMessage();
-		if(isPaused()==false)
+		try
 		{
-			if(isAppendNextLine())
-				latch.addLast(msg);
-			else
-				latch.addFirst(msg);
-			long now=System.currentTimeMillis();
-			if(now-lastUpdate>1000)
+			java.lang.String msg = notification.getMessage();
+			if (isPaused() == false)
 			{
-				lastUpdate=now;
-				java.util.List<java.lang.String> toRender=new java.util.LinkedList(latch);
-				latch.clear();
-				if(isVisible()==true)
-					javax.swing.SwingUtilities.invokeLater(new LogRunnable(toRender));
+				javax.management.openmbean.CompositeData data = (javax.management.openmbean.CompositeData) notification.getUserData();
+				java.lang.String level = data.get("level").toString();
+				if (levelModel.isActive(level))
+				{
+					if (isAppendNextLine())
+						latch.addLast(msg);
+					else
+						latch.addFirst(msg);
+				}
+				long now = System.currentTimeMillis();
+				if (now - lastUpdate > 1000)
+				{
+					lastUpdate = now;
+					java.util.List<java.lang.String> toRender = new java.util.LinkedList(latch);
+					latch.clear();
+					if (isVisible() == true)
+						javax.swing.SwingUtilities.invokeLater(new LogRunnable(toRender));
+				}
 			}
+		}
+		catch(java.lang.Throwable t)
+		{
+			de.elbosso.util.Utilities.handleException(null,t);
 		}
 	}
 	private class LogRunnable extends java.lang.Object implements java.lang.Runnable

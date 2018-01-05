@@ -126,7 +126,7 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 
 	<repositories>
         <!--remote-->
-		<repository>
+		<!--repository>
 			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -136,9 +136,9 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 			<name>YourName</name>
 			<url>http://elbosso.github.io/maven2</url>
 			<layout>default</layout>
-		</repository>
+		</repository-->
         <!--local-->
-        <!--repository>
+        <repository>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
@@ -146,7 +146,7 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
             </releases>
             <id>local-maven-repo</id>
             <url>file:////home/elbosso/work/elbosso.github.io/maven2</url>
-        </repository-->
+        </repository>
 		<repository>
 			<id>central</id>
 			<url>http://repo1.maven.org/maven2</url>
