@@ -39,6 +39,7 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 	private de.netsysit.ui.dialog.GeneralPurposeInfoDialog gpid;
 	private javax.swing.JPanel preferencesPanel;
 	private final LevelModel levelModel=new LevelModel();
+	private final LoggerModel loggerModel=new LoggerModel();
 
 	TextAreaView()
 	{
@@ -191,6 +192,8 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 					preferencesPanel=new javax.swing.JPanel(new java.awt.BorderLayout());
 					javax.swing.JTable t=new javax.swing.JTable(levelModel);
 					preferencesPanel.add(new javax.swing.JScrollPane(t), BorderLayout.NORTH);
+					t=new javax.swing.JTable(loggerModel);
+					preferencesPanel.add(new javax.swing.JScrollPane(t));
 				}
 				gpid.showDialog(preferencesPanel);
 			}
@@ -228,11 +231,13 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 		try
 		{
 			java.lang.String msg = notification.getMessage();
+			javax.management.openmbean.CompositeData data = (javax.management.openmbean.CompositeData) notification.getUserData();
+			java.lang.String loggerName=data.get("loggerName").toString();
+			loggerModel.add(loggerName);
 			if (isPaused() == false)
 			{
-				javax.management.openmbean.CompositeData data = (javax.management.openmbean.CompositeData) notification.getUserData();
 				java.lang.String level = data.get("level").toString();
-				if (levelModel.isActive(level))
+				if ((levelModel.isActive(level))&&(loggerModel.isActive(loggerName)))
 				{
 					if (isAppendNextLine())
 						latch.addLast(msg);
