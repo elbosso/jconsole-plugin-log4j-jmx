@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 
 public class TextAreaView extends javax.swing.JPanel implements javax.management.NotificationListener
 {
+	private static int MAX_LINE_COUNT=2000;
 	private static org.syntax.jedit.SyntaxStyle[] styles = new org.syntax.jedit.SyntaxStyle[org.syntax.jedit.tokenmarker.Token.ID_COUNT];
 	static
 	{
@@ -204,19 +205,21 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 	@Override
 	public void handleNotification(Notification notification, Object handback)
 	{
+		java.lang.String msg=notification.getMessage();
 		if(isPaused()==false)
 		{
 			if(isAppendNextLine())
-				latch.addLast(notification.getMessage());
+				latch.addLast(msg);
 			else
-				latch.addFirst(notification.getMessage());
+				latch.addFirst(msg);
 			long now=System.currentTimeMillis();
 			if(now-lastUpdate>1000)
 			{
 				lastUpdate=now;
 				java.util.List<java.lang.String> toRender=new java.util.LinkedList(latch);
 				latch.clear();
-				javax.swing.SwingUtilities.invokeLater(new LogRunnable(toRender));
+				if(isVisible()==true)
+					javax.swing.SwingUtilities.invokeLater(new LogRunnable(toRender));
 			}
 		}
 	}
@@ -233,24 +236,30 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 		{
 			try
 			{
-				java.lang.StringBuffer buf=new java.lang.StringBuffer();
-				for(java.lang.String l:le)
+				if(ed.getTextField().getLineCount()<MAX_LINE_COUNT)
 				{
-					buf.append(l);
-				}
-				java.lang.String bufs=buf.toString();
-				if(isAppendNextLine())
-				{
-					doc.insertString(ed.getTextField().getDocumentLength(), bufs, null);
-					if(isScrollLock()==false)
-						ed.getTextField().setCaretPosition(ed.getTextField().getLineStartOffset(ed.getTextField().getCaretLine()));
+					setStatus(null);
+					java.lang.StringBuffer buf = new java.lang.StringBuffer();
+					for (java.lang.String l : le)
+					{
+						buf.append(l);
+					}
+					java.lang.String bufs = buf.toString();
+					if (isAppendNextLine())
+					{
+						doc.insertString(ed.getTextField().getDocumentLength(), bufs, null);
+						if (isScrollLock() == false)
+							ed.getTextField().setCaretPosition(ed.getTextField().getLineStartOffset(ed.getTextField().getCaretLine()));
+					}
+					else
+					{
+						doc.insertString(0, bufs, null);
+						if (isScrollLock() == false)
+							ed.getTextField().setCaretPosition(0);
+					}
 				}
 				else
-				{
-					doc.insertString(0, bufs, null);
-					if(isScrollLock()==false)
-						ed.getTextField().setCaretPosition(0);
-				}
+					setStatus("Max line count reached!");
 			} catch (BadLocationException ex)
 			{
 				ex.printStackTrace();
