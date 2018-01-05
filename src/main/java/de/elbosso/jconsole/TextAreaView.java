@@ -49,7 +49,7 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 		doc.setTokenMarker(new org.syntax.jedit.tokenmarker.Log4jTokenMarker());
 		ed.setEditable(false);
 		add(ed.getTextField());
-		ed.getToggleBookmarkAction().putValue(Action.SMALL_ICON,new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("toolbarButtonGraphics/general/Bookmarks24.gif")));
+		ed.getToggleBookmarkAction().putValue(Action.SMALL_ICON,(de.netsysit.util.ResourceLoader.getIcon("toolbarButtonGraphics/general/Bookmarks24.gif")));
 		try
 		{
 			ed.getPasteAfterEraseAction().putValue(Action.SMALL_ICON,new javax.swing.ImageIcon(de.netsysit.ui.image.DecoratedImageProducer.produceImage(de.netsysit.util.ResourceLoader.getImgResource("toolbarButtonGraphics/general/Paste24.gif"), de.netsysit.util.ResourceLoader.getImgResource("toolbarButtonGraphics/general/Delete16.gif"))));
@@ -85,14 +85,15 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 		catch(java.lang.Throwable exp)
 		{
 		}
-		try
+		ed.getSaveAsAction().putValue(Action.SMALL_ICON,de.netsysit.util.ResourceLoader.getIcon("toolbarButtonGraphics/general/SaveAs24.gif"));
+/*		try
 		{
 			ed.getSaveAsAction().putValue(Action.SMALL_ICON,new javax.swing.ImageIcon(de.netsysit.ui.image.DecoratedImageProducer.produceImage(de.netsysit.util.ResourceLoader.getImgResource("toolbarButtonGraphics/general/Save24.gif"), de.netsysit.util.ResourceLoader.getImgResource("action/drawable-mdpi/ic_help_outline_black_36dp.png"))));
 		}
 		catch(java.lang.Throwable exp)
 		{
 		}
-		try
+*/		try
 		{
 			ed.getGotoLineNumberAction().putValue(Action.SMALL_ICON,new javax.swing.ImageIcon(de.netsysit.ui.image.DecoratedImageProducer.produceImage(de.netsysit.util.ResourceLoader.getImgResource("action/drawable-mdpi/ic_view_headline_black_48dp.png"), de.netsysit.util.ResourceLoader.getImgResource("action/drawable-mdpi/ic_trending_flat_black_36dp.png"), SwingUtilities.SOUTH_WEST)));
 		}
@@ -120,10 +121,10 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 		tb.add(ed.getGotoNextBookmarkAction());
 		tb.addSeparator();
 		javax.swing.JToggleButton toggle=new javax.swing.JToggleButton(scrollLockAction);
-		toggle.setSelectedIcon(new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("action/drawable-mdpi/ic_lock_black_48dp.png")));
+		toggle.setSelectedIcon((de.netsysit.util.ResourceLoader.getIcon("action/drawable-mdpi/ic_lock_black_48dp.png")));
 		tb.add(toggle);
 		toggle=new javax.swing.JToggleButton(appendNextLineAction);
-		toggle.setSelectedIcon(new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("toolbarButtonGraphics/navigation/Down24.gif")));
+		toggle.setSelectedIcon((de.netsysit.util.ResourceLoader.getIcon("toolbarButtonGraphics/navigation/Down24.gif")));
 		tb.add(toggle);
 		add(tb, BorderLayout.NORTH);
 	}
@@ -141,7 +142,7 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 	}
 	private void createActions()
 	{
-		scrollLockAction=new javax.swing.AbstractAction(null,new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("action/drawable-mdpi/ic_lock_open_black_48dp.png")))
+		scrollLockAction=new javax.swing.AbstractAction(null,(de.netsysit.util.ResourceLoader.getIcon("action/drawable-mdpi/ic_lock_open_black_48dp.png")))
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -150,7 +151,7 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 			}
 		};
 		scrollLockAction.putValue(Action.SELECTED_KEY, Boolean.FALSE);
-		appendNextLineAction=new javax.swing.AbstractAction(null,new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("toolbarButtonGraphics/navigation/Up24.gif")))
+		appendNextLineAction=new javax.swing.AbstractAction(null,(de.netsysit.util.ResourceLoader.getIcon("toolbarButtonGraphics/navigation/Up24.gif")))
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)

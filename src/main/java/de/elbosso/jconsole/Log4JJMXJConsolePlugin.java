@@ -47,7 +47,7 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 		{
 			java.util.Properties iconFallbacks = new java.util.Properties();
 			iconFallbacks.setProperty("toolbarButtonGraphics/general/Save24.gif", "device/drawable-mdpi/ic_sd_storage_black_48dp.png");
-//			iconFallbacks.setProperty("toolbarButtonGraphics/general/SaveAs24.gif", "device/drawable-mdpi/ic_sd_storage_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/SaveAs24.gif", "toolbarButtonGraphics/general/Save24.gif&action/drawable-mdpi/ic_help_outline_black_36dp.png");
 			iconFallbacks.setProperty("toolbarButtonGraphics/general/Delete16.gif", "action/drawable-mdpi/ic_delete_black_36dp.png");
 			iconFallbacks.setProperty("toolbarButtonGraphics/general/Delete24.gif", "action/drawable-mdpi/ic_delete_black_48dp.png");
 			iconFallbacks.setProperty("toolbarButtonGraphics/general/Cut24.gif", "content/drawable-mdpi/ic_content_cut_black_48dp.png");
@@ -70,6 +70,7 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 	
 	public Log4JJMXJConsolePlugin()
 	{
+		de.netsysit.util.ResourceLoader.setSize(de.netsysit.util.ResourceLoader.IconSize.small);
 		tableView=new TableView();
 		tabs.put("table", tableView);
 		textAreaView=new TextAreaView();
@@ -79,7 +80,7 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 	}
 	private void createActions()
 	{
-		pauseAction=new javax.swing.AbstractAction(null,new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("toolbarButtonGraphics/media/Pause24.gif")))
+		pauseAction=new javax.swing.AbstractAction(null,(de.netsysit.util.ResourceLoader.getIcon("toolbarButtonGraphics/media/Pause24.gif")))
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
