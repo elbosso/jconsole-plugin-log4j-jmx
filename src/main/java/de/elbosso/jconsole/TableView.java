@@ -21,6 +21,8 @@ class TableView extends Base implements javax.swing.event.TableModelListener
 		de.netsysit.model.table.TableSorter sorter=new de.netsysit.model.table.TableSorter(model);
 		sorter.addMouseListenerToHeaderInTable(table);
 		table.setModel(sorter);
+		de.elbosso.ui.renderer.table.SortableTableRenderer tableHeaderRenderer=new de.elbosso.ui.renderer.table.SortableTableRenderer();
+		table.getTableHeader().setDefaultRenderer(tableHeaderRenderer);
 		add(new javax.swing.JScrollPane(table));
 		tb.add(clearAction);
 		tb.add(configAction);
