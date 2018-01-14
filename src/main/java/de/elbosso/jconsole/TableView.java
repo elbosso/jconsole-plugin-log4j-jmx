@@ -53,18 +53,34 @@ class TableView extends Base
 	}
 	class TableModel extends de.netsysit.model.table.EventHandlingSupport
 	{
-		private java.util.List<javax.management.openmbean.CompositeData> data=new java.util.LinkedList();
+		private java.util.List<javax.management.openmbean.CompositeData> store=new java.util.LinkedList();
+		private java.util.List<javax.management.openmbean.CompositeData> filtered=new java.util.LinkedList();
 
 		void addData(java.util.List<javax.management.openmbean.CompositeData> newdata)
 		{
-			data.addAll(newdata);
+			store.addAll(newdata);
+			filter();
+//			fireTableChanged();
+		}
+		void filter()
+		{
+			filtered.clear();
+			for(javax.management.openmbean.CompositeData data:store)
+			{
+				java.lang.String level = data.get("level").toString();
+				java.lang.String loggerName=data.get("loggerName").toString();
+				if ((levelModel.isActive(level))&&(loggerModel.isActive(loggerName)))
+				{
+					filtered.add(data);
+				}
+			}
 			fireTableChanged();
 		}
 
 		@Override
 		public int getRowCount()
 		{
-			return data.size();
+			return filtered.size();
 		}
 
 		@Override
@@ -118,7 +134,7 @@ class TableView extends Base
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex)
 		{
-			javax.management.openmbean.CompositeData item=data.get(rowIndex);
+			javax.management.openmbean.CompositeData item=filtered.get(rowIndex);
 			java.lang.Object rv=null;
 			switch(columnIndex)
 			{
