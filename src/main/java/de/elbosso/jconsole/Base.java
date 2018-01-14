@@ -17,22 +17,23 @@ abstract class Base extends javax.swing.JPanel implements javax.management.Notif
 	private long lastUpdate=System.currentTimeMillis();
 	private de.netsysit.ui.dialog.GeneralPurposeInfoDialog gpid;
 	private javax.swing.JPanel preferencesPanel;
-	private final LevelModel levelModel=new LevelModel();
-	private final LoggerModel loggerModel=new LoggerModel();
+	protected final LevelModel levelModel=new LevelModel();
+	protected final LoggerModel loggerModel=new LoggerModel();
 
 	protected Base()
 	{
 		super(new java.awt.BorderLayout());
 		createActions();
+		createToolbar();
 		statusLabel=new javax.swing.JLabel("not Connected!");
 		add(statusLabel, BorderLayout.SOUTH);
 
 	}
-	protected void createToolbar()
+	private void createToolbar()
 	{
 		tb=new de.netsysit.ui.components.AdaptiveToolBar();
 		tb.setFloatable(false);
-
+		add(tb, BorderLayout.NORTH);
 	}
 	void addToToolbar(javax.swing.JComponent comp)
 	{
@@ -119,11 +120,7 @@ abstract class Base extends javax.swing.JPanel implements javax.management.Notif
 			loggerModel.add(loggerName);
 			if (isPaused() == false)
 			{
-				java.lang.String level = data.get("level").toString();
-				if ((levelModel.isActive(level))&&(loggerModel.isActive(loggerName)))
-				{
-					acknowledgeDataImpl(notification);
-				}
+				acknowledgeDataImpl(notification);
 				long now = System.currentTimeMillis();
 				if (now - lastUpdate > 1000)
 				{

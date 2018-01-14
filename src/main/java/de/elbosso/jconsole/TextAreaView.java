@@ -4,10 +4,9 @@ package de.elbosso.jconsole;
 import javax.management.Notification;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class TextAreaView extends Base
+class TextAreaView extends Base
 {
 	private static int MAX_LINE_COUNT=2000;
 	private static org.syntax.jedit.SyntaxStyle[] styles = new org.syntax.jedit.SyntaxStyle[org.syntax.jedit.tokenmarker.Token.ID_COUNT];
@@ -33,7 +32,6 @@ public class TextAreaView extends Base
 	TextAreaView()
 	{
 		super();
-		createToolbar();
 		de.netsysit.ui.text.AugmentedJEditTextArea ta=new de.netsysit.ui.text.AugmentedJEditTextArea();
 		ed=new de.netsysit.ui.text.TextEditor(ta);
 
@@ -118,7 +116,6 @@ public class TextAreaView extends Base
 		toggle.setSelectedIcon((de.netsysit.util.ResourceLoader.getIcon("toolbarButtonGraphics/navigation/Down24.gif")));
 		tb.add(toggle);
 		tb.add(configAction);
-		add(tb, BorderLayout.NORTH);
 	}
 
 	@Override
@@ -188,11 +185,17 @@ public class TextAreaView extends Base
 	@Override
 	protected void acknowledgeDataImpl(Notification notification)
 	{
-		java.lang.String msg = notification.getMessage();
-		if (isAppendNextLine())
-			latch.addLast(msg);
-		else
-			latch.addFirst(msg);
+		javax.management.openmbean.CompositeData data = (javax.management.openmbean.CompositeData) notification.getUserData();
+		java.lang.String level = data.get("level").toString();
+		java.lang.String loggerName=data.get("loggerName").toString();
+		if ((levelModel.isActive(level))&&(loggerModel.isActive(loggerName)))
+		{
+			java.lang.String msg = notification.getMessage();
+			if (isAppendNextLine())
+				latch.addLast(msg);
+			else
+				latch.addFirst(msg);
+		}
 	}
 
 	@Override
