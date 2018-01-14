@@ -1,6 +1,7 @@
 package de.elbosso.jconsole;
 
 import javax.management.Notification;
+import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import java.awt.event.ActionEvent;
 
@@ -9,21 +10,35 @@ class TableView extends Base implements javax.swing.event.TableModelListener
 	private final de.netsysit.ui.components.SophisticatedRenderingTable table;
 	private java.util.List<javax.management.openmbean.CompositeData> latch=new java.util.LinkedList();
 	private TableModel model;
+	private AbstractAction clearAction;
 
 	TableView()
 	{
 		super();
+		createActions();
 		model=new TableModel();
 		table=new de.netsysit.ui.components.SophisticatedRenderingTable();
 		de.netsysit.model.table.TableSorter sorter=new de.netsysit.model.table.TableSorter(model);
 		sorter.addMouseListenerToHeaderInTable(table);
 		table.setModel(sorter);
 		add(new javax.swing.JScrollPane(table));
+		tb.add(clearAction);
 		tb.add(configAction);
 		levelModel.addTableModelListener(this);
 		loggerModel.addTableModelListener(this);
 	}
 
+	private void createActions()
+	{
+		clearAction =
+				new javax.swing.AbstractAction(null, new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("toolbarButtonGraphics/general/Delete24.gif")))
+				{
+					public void actionPerformed(java.awt.event.ActionEvent evt)
+					{
+						model.clear();
+					}
+				};
+	}
 	@Override
 	protected void appendNextLineActionImpl(ActionEvent e)
 	{
@@ -59,6 +74,11 @@ class TableView extends Base implements javax.swing.event.TableModelListener
 			store.addAll(newdata);
 			filter();
 //			fireTableChanged();
+		}
+		void clear()
+		{
+			store.clear();
+			filter();
 		}
 		void filter()
 		{
