@@ -7,7 +7,7 @@ import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class TextAreaView extends javax.swing.JPanel implements javax.management.NotificationListener
+public class TextAreaView extends Base
 {
 	private static int MAX_LINE_COUNT=2000;
 	private static org.syntax.jedit.SyntaxStyle[] styles = new org.syntax.jedit.SyntaxStyle[org.syntax.jedit.tokenmarker.Token.ID_COUNT];
@@ -28,25 +28,12 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 	};
 	private org.syntax.jedit.SyntaxDocument doc;
 	private de.netsysit.ui.text.TextEditor ed;
-	private final javax.swing.JLabel statusLabel;
-	private AbstractAction scrollLockAction;
-	private AbstractAction appendNextLineAction;
-	private AbstractAction configAction;
-	private javax.swing.JToolBar tb;
-	private boolean paused;
-	private long lastUpdate=System.currentTimeMillis();
 	private java.util.LinkedList<java.lang.String> latch=new java.util.LinkedList();
-	private de.netsysit.ui.dialog.GeneralPurposeInfoDialog gpid;
-	private javax.swing.JPanel preferencesPanel;
-	private final LevelModel levelModel=new LevelModel();
-	private final LoggerModel loggerModel=new LoggerModel();
 
 	TextAreaView()
 	{
-		super(new java.awt.BorderLayout());
-		createActions();
-		statusLabel=new javax.swing.JLabel("not Connected!");
-		add(statusLabel, BorderLayout.SOUTH);
+		super();
+		createToolbar();
 		de.netsysit.ui.text.AugmentedJEditTextArea ta=new de.netsysit.ui.text.AugmentedJEditTextArea();
 		ed=new de.netsysit.ui.text.TextEditor(ta);
 
@@ -106,8 +93,6 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 		catch(java.lang.Throwable exp)
 		{
 		}
-		tb=new de.netsysit.ui.components.AdaptiveToolBar();
-		tb.setFloatable(false);
 		tb.add(ed.getSaveAction());
 		tb.add(ed.getSaveAsAction());
 		tb.addSeparator();
@@ -135,131 +120,27 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 		tb.add(configAction);
 		add(tb, BorderLayout.NORTH);
 	}
-	void addToToolbar(javax.swing.JComponent comp)
-	{
-		tb.add(comp);
-	}
-	void addToToolbar(javax.swing.Action action)
-	{
-		tb.add(action);
-	}
-	void addSeparatorToToolbar()
-	{
-		tb.addSeparator();
-	}
-	private void createActions()
-	{
-		scrollLockAction=new javax.swing.AbstractAction(null,(de.netsysit.util.ResourceLoader.getIcon("action/drawable-mdpi/ic_lock_open_black_48dp.png")))
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				//setScrollLock(((java.lang.Boolean)getValue(Action.SELECTED_KEY)).booleanValue());
-			}
-		};
-		scrollLockAction.putValue(Action.SELECTED_KEY, Boolean.FALSE);
-		appendNextLineAction=new javax.swing.AbstractAction(null,(de.netsysit.util.ResourceLoader.getIcon("toolbarButtonGraphics/navigation/Up24.gif")))
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				javax.swing.SwingUtilities.invokeLater(new java.lang.Runnable()
-				{
-					public void run()
-					{
-						try
-						{
-							latch.clear();
-							ed.clear();
-						} catch (BadLocationException e)
-						{
-							e.printStackTrace();
-						}
-					}
-				});
-//				setAppendNextLine(((java.lang.Boolean)getValue(Action.SELECTED_KEY)).booleanValue());
-			}
-		};
-		appendNextLineAction.putValue(Action.SELECTED_KEY, Boolean.FALSE);
-		configAction=new javax.swing.AbstractAction(null,(de.netsysit.util.ResourceLoader.getIcon("toolbarButtonGraphics/general/Preferences24.gif")))
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				if(gpid==null)
-				{
-					gpid=de.netsysit.ui.dialog.GeneralPurposeInfoDialog.create(TextAreaView.this,"Preferences");
-					preferencesPanel=new javax.swing.JPanel(new java.awt.BorderLayout());
-					javax.swing.JTable t=new javax.swing.JTable(levelModel);
-					preferencesPanel.add(new javax.swing.JScrollPane(t), BorderLayout.NORTH);
-					t=new javax.swing.JTable(loggerModel);
-					preferencesPanel.add(new javax.swing.JScrollPane(t));
-				}
-				gpid.showDialog(preferencesPanel);
-			}
-		};
-	}
-
-	void setStatus(java.lang.String newStatus)
-	{
-		statusLabel.setText(newStatus);
-	}
-
-	public synchronized boolean isAppendNextLine()
-	{
-		return ((java.lang.Boolean)appendNextLineAction.getValue(Action.SELECTED_KEY)).booleanValue();
-	}
-
-	public synchronized boolean isScrollLock()
-	{
-		return ((java.lang.Boolean)scrollLockAction.getValue(Action.SELECTED_KEY)).booleanValue();
-	}
-
-	public synchronized boolean isPaused()
-	{
-		return paused;
-	}
-
-	public void setPaused(boolean paused)
-	{
-		this.paused = paused;
-	}
 
 	@Override
-	public void handleNotification(Notification notification, Object handback)
+	protected void appendNextLineActionImpl(ActionEvent e)
 	{
-		try
+		javax.swing.SwingUtilities.invokeLater(new java.lang.Runnable()
 		{
-			java.lang.String msg = notification.getMessage();
-			javax.management.openmbean.CompositeData data = (javax.management.openmbean.CompositeData) notification.getUserData();
-			java.lang.String loggerName=data.get("loggerName").toString();
-			loggerModel.add(loggerName);
-			if (isPaused() == false)
+			public void run()
 			{
-				java.lang.String level = data.get("level").toString();
-				if ((levelModel.isActive(level))&&(loggerModel.isActive(loggerName)))
+				try
 				{
-					if (isAppendNextLine())
-						latch.addLast(msg);
-					else
-						latch.addFirst(msg);
-				}
-				long now = System.currentTimeMillis();
-				if (now - lastUpdate > 1000)
-				{
-					lastUpdate = now;
-					java.util.List<java.lang.String> toRender = new java.util.LinkedList(latch);
 					latch.clear();
-					if (isVisible() == true)
-						javax.swing.SwingUtilities.invokeLater(new LogRunnable(toRender));
+					ed.clear();
+				} catch (BadLocationException e)
+				{
+					e.printStackTrace();
 				}
 			}
-		}
-		catch(java.lang.Throwable t)
-		{
-			de.elbosso.util.Utilities.handleException(null,t);
-		}
+		});
+//				setAppendNextLine(((java.lang.Boolean)getValue(Action.SELECTED_KEY)).booleanValue());
 	}
+
 	private class LogRunnable extends java.lang.Object implements java.lang.Runnable
 	{
 		private final java.util.List<java.lang.String> le;
@@ -304,4 +185,22 @@ public class TextAreaView extends javax.swing.JPanel implements javax.management
 		}
 	}
 
+	@Override
+	protected void acknowledgeDataImpl(Notification notification)
+	{
+		java.lang.String msg = notification.getMessage();
+		if (isAppendNextLine())
+			latch.addLast(msg);
+		else
+			latch.addFirst(msg);
+	}
+
+	@Override
+	protected void updateGUIImpl(Notification notification)
+	{
+		java.util.List<java.lang.String> toRender = new java.util.LinkedList(latch);
+		latch.clear();
+		if (isVisible() == true)
+			javax.swing.SwingUtilities.invokeLater(new LogRunnable(toRender));
+	}
 }

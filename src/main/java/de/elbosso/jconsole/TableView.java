@@ -2,28 +2,35 @@ package de.elbosso.jconsole;
 
 import javax.management.Notification;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
-public class TableView extends javax.swing.JPanel implements javax.management.NotificationListener
+public class TableView extends Base
 {
 	private final de.netsysit.ui.components.SophisticatedRenderingTable table;
-	private final javax.swing.JLabel statusLabel;
 
 	TableView()
 	{
-		super(new java.awt.BorderLayout());
-		statusLabel=new javax.swing.JLabel("not Connected!");
-		add(statusLabel, BorderLayout.SOUTH);
+		super();
 		table=new de.netsysit.ui.components.SophisticatedRenderingTable();
 		add(new javax.swing.JScrollPane(table));
 	}
 
 	@Override
-	public void handleNotification(Notification notification, Object handback)
+	protected void appendNextLineActionImpl(ActionEvent e)
 	{
 
 	}
-	void setStatus(java.lang.String newStatus)
+
+	@Override
+	protected void acknowledgeDataImpl(Notification notification)
 	{
-		statusLabel.setText(newStatus);
+
 	}
+
+	@Override
+	protected void updateGUIImpl(Notification notification)
+	{
+
+	}
+
 }
