@@ -25,6 +25,7 @@ class TableView extends Base implements javax.swing.event.TableModelListener
 		table.getTableHeader().setDefaultRenderer(tableHeaderRenderer);
 		table.setDefaultRenderer(java.util.Date.class,de.elbosso.ui.renderer.table.DateRenderer.create(new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
 		add(new javax.swing.JScrollPane(table));
+		tb.add(table.getRulesBasedHighLighterManagerAction());
 		tb.add(clearAction);
 		tb.add(configAction);
 		levelModel.addTableModelListener(this);

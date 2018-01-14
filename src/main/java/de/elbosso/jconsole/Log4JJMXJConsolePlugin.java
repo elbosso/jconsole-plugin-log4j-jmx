@@ -1,5 +1,7 @@
 package de.elbosso.jconsole;
 
+import org.apache.log4j.Level;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
@@ -63,6 +65,9 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 			iconFallbacks.setProperty("toolbarButtonGraphics/general/Preferences24.gif","image/drawable-mdpi/ic_tune_black_48dp.png");
 			iconFallbacks.setProperty("toolbarButtonGraphics/navigation/Up16.gif","navigation/drawable-mdpi/ic_arrow_upward_black_24dp.png");
 			iconFallbacks.setProperty("toolbarButtonGraphics/navigation/Down16.gif","navigation/drawable-mdpi/ic_arrow_downward_black_24dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/Add24.gif","content/drawable-mdpi/ic_add_box_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/Remove24.gif","action/drawable-mdpi/ic_delete_black_48dp.png");
+			iconFallbacks.setProperty("toolbarButtonGraphics/general/Edit24.gif","editor/drawable-mdpi/ic_border_color_black_48dp.png");
 			de.netsysit.util.ResourceLoader.configure(iconFallbacks);
 		}
 		catch(java.io.IOException ioexp)
@@ -73,6 +78,30 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 	
 	public Log4JJMXJConsolePlugin()
 	{
+		de.elbosso.util.Utilities.configureBasicStdoutLogging(Level.TRACE);
+//		java.lang.Thread.currentThread().setContextClassLoader(Log4JJMXJConsolePlugin.class.getClassLoader());
+		try
+		{
+			java.lang.String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+					"<java version=\"1.8.0_144\" class=\"java.beans.XMLDecoder\">\n" +
+					" <object class=\"de.netsysit.util.validator.rules.ContainsSubstringRule\">\n" +
+					"  <void property=\"casesensitive\">\n" +
+					"   <boolean>true</boolean>\n" +
+					"  </void>\n" +
+					"  <void property=\"substring\">\n" +
+					"   <string>blocked</string>\n" +
+					"  </void>\n" +
+					" </object>\n" +
+					"</java>";
+			java.beans.XMLDecoder dec = new java.beans.XMLDecoder(new java.io.ByteArrayInputStream(xml.getBytes()));
+			java.lang.Object o = dec.readObject();
+			System.out.println(o);
+			System.out.println(xml);
+		}
+		catch(java.lang.Throwable t)
+		{
+			t.printStackTrace();
+		}
 		de.netsysit.util.ResourceLoader.setSize(de.netsysit.util.ResourceLoader.IconSize.small);
 		tableView=new TableView();
 		tabs.put("table", tableView);
