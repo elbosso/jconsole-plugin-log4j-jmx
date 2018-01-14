@@ -1,5 +1,7 @@
 package de.elbosso.jconsole;
 
+import javax.swing.event.TableModelEvent;
+
 public class LoggerModel extends de.netsysit.model.table.EventHandlingSupport
 {
 	private final java.util.Map<java.lang.String, java.lang.Boolean> loggerMap;
@@ -75,5 +77,7 @@ public class LoggerModel extends de.netsysit.model.table.EventHandlingSupport
 	{
 		if (columnIndex == 1)
 			loggerMap.put(loggerNames.get(rowIndex), (java.lang.Boolean) aValue);
+		TableModelEvent tme=new TableModelEvent(this,rowIndex);
+		fireTableChanged(tme);
 	}
 }

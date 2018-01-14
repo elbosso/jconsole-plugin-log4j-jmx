@@ -1,10 +1,10 @@
 package de.elbosso.jconsole;
 
 import javax.management.Notification;
-import java.awt.*;
+import javax.swing.event.TableModelEvent;
 import java.awt.event.ActionEvent;
 
-class TableView extends Base
+class TableView extends Base implements javax.swing.event.TableModelListener
 {
 	private final de.netsysit.ui.components.SophisticatedRenderingTable table;
 	private java.util.List<javax.management.openmbean.CompositeData> latch=new java.util.LinkedList();
@@ -19,23 +19,14 @@ class TableView extends Base
 		sorter.addMouseListenerToHeaderInTable(table);
 		table.setModel(sorter);
 		add(new javax.swing.JScrollPane(table));
-		javax.swing.JToggleButton toggle=new javax.swing.JToggleButton(scrollLockAction);
-		toggle.setSelectedIcon((de.netsysit.util.ResourceLoader.getIcon("action/drawable-mdpi/ic_lock_black_48dp.png")));
-		tb.add(toggle);
 		tb.add(configAction);
+		levelModel.addTableModelListener(this);
+		loggerModel.addTableModelListener(this);
 	}
 
 	@Override
 	protected void appendNextLineActionImpl(ActionEvent e)
 	{
-		javax.swing.SwingUtilities.invokeLater(new java.lang.Runnable()
-		{
-			public void run()
-			{
-//				model.invertDisplayOrder();
-			}
-		});
-
 	}
 
 	@Override
@@ -51,6 +42,13 @@ class TableView extends Base
 		model.addData(latch);
 		latch.clear();
 	}
+
+	@Override
+	public void tableChanged(TableModelEvent e)
+	{
+		model.filter();
+	}
+
 	class TableModel extends de.netsysit.model.table.EventHandlingSupport
 	{
 		private java.util.List<javax.management.openmbean.CompositeData> store=new java.util.LinkedList();

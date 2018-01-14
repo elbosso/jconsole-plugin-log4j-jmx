@@ -1,5 +1,6 @@
 package de.elbosso.jconsole;
 
+import javax.swing.event.TableModelEvent;
 import java.util.Map;
 
 public class LevelModel extends de.netsysit.model.table.EventHandlingSupport
@@ -104,5 +105,7 @@ public class LevelModel extends de.netsysit.model.table.EventHandlingSupport
 	{
 		if(columnIndex==1)
 			levelMap.put(getLevel(rowIndex),(java.lang.Boolean)aValue);
+		TableModelEvent tme=new TableModelEvent(this,rowIndex);
+		fireTableChanged(tme);
 	}
 }
