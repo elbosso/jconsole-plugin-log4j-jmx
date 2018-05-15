@@ -2,44 +2,31 @@ package de.elbosso.jconsole;
 
 import javax.swing.event.TableModelEvent;
 
-public class LoggerModel extends de.netsysit.model.table.EventHandlingSupport
+public class LoggerModel extends StringBooleanModel
 {
-	private final java.util.Map<java.lang.String, java.lang.Boolean> loggerMap;
 	private final java.util.List<java.lang.String> loggerNames;
 
 	public LoggerModel()
 	{
 		super();
-		loggerMap = new java.util.HashMap();
 		loggerNames=new java.util.LinkedList();
 	}
 
 	public void add(java.lang.String loggerName)
 	{
-		if(loggerMap.containsKey(loggerName)==false)
+		if(map.containsKey(loggerName)==false)
 		{
-			loggerMap.put(loggerName, Boolean.FALSE);
+			map.put(loggerName, Boolean.FALSE);
 			loggerNames.add(loggerName);
 			java.util.Collections.sort(loggerNames);
 			fireTableChanged();
 		}
 	}
 
-	public boolean isActive(java.lang.String logger)
-	{
-		return loggerMap.get(logger).booleanValue();
-	}
-
 	@Override
 	public int getRowCount()
 	{
-		return loggerMap.size();
-	}
-
-	@Override
-	public int getColumnCount()
-	{
-		return 2;
+		return map.size();
 	}
 
 	@Override
@@ -49,34 +36,16 @@ public class LoggerModel extends de.netsysit.model.table.EventHandlingSupport
 	}
 
 	@Override
-	public Class<?> getColumnClass(int columnIndex)
+	protected java.lang.String getString(int index)
 	{
-		return columnIndex == 0 ? java.lang.String.class : java.lang.Boolean.class;
-	}
-
-	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex)
-	{
-		return columnIndex == 1;
-	}
-
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex)
-	{
-		java.lang.Object rv = null;
-
-		java.lang.String logger = loggerNames.get(rowIndex);
-
-		rv = columnIndex == 0 ? logger : isActive(logger);
-
-		return rv;
+		return loggerNames.get(index);
 	}
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex)
 	{
 		if (columnIndex == 1)
-			loggerMap.put(loggerNames.get(rowIndex), (java.lang.Boolean) aValue);
+			map.put(getString(rowIndex), (java.lang.Boolean) aValue);
 		TableModelEvent tme=new TableModelEvent(this,rowIndex);
 		fireTableChanged(tme);
 	}

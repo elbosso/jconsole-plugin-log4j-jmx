@@ -1,28 +1,21 @@
 package de.elbosso.jconsole;
 
 import javax.swing.event.TableModelEvent;
-import java.util.Map;
 
-public class LevelModel extends de.netsysit.model.table.EventHandlingSupport
+public class LevelModel extends StringBooleanModel
 {
-	private final java.util.Map<java.lang.String,java.lang.Boolean> levelMap;
 
 	public LevelModel()
 	{
 		super();
-		levelMap=new java.util.HashMap();
-		levelMap.put("DEBUG",java.lang.Boolean.FALSE);
-		levelMap.put("TRACE",java.lang.Boolean.FALSE);
-		levelMap.put("INFO",java.lang.Boolean.FALSE);
-		levelMap.put("ERROR",java.lang.Boolean.TRUE);
-		levelMap.put("FATAL",java.lang.Boolean.TRUE);
-		levelMap.put("WARN",java.lang.Boolean.TRUE);
+		map.put("DEBUG",java.lang.Boolean.FALSE);
+		map.put("TRACE",java.lang.Boolean.FALSE);
+		map.put("INFO",java.lang.Boolean.FALSE);
+		map.put("ERROR",java.lang.Boolean.TRUE);
+		map.put("FATAL",java.lang.Boolean.TRUE);
+		map.put("WARN",java.lang.Boolean.TRUE);
 	}
 
-	public boolean isActive(java.lang.String level)
-	{
-		return levelMap.get(level).booleanValue();
-	}
 
 	@Override
 	public int getRowCount()
@@ -31,45 +24,15 @@ public class LevelModel extends de.netsysit.model.table.EventHandlingSupport
 	}
 
 	@Override
-	public int getColumnCount()
-	{
-		return 2;
-	}
-
-	@Override
 	public String getColumnName(int columnIndex)
 	{
 		return columnIndex==0?"Level":"active";
 	}
 
-	@Override
-	public Class<?> getColumnClass(int columnIndex)
-	{
-		return columnIndex==0?java.lang.String.class:java.lang.Boolean.class;
-	}
-
-	@Override
-	public boolean isCellEditable(int rowIndex, int columnIndex)
-	{
-		return columnIndex==1;
-	}
-
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex)
-	{
-		java.lang.Object rv=null;
-
-		java.lang.String level = getLevel(rowIndex);
-
-		rv=columnIndex==0?level:isActive(level);
-
-		return rv;
-	}
-
-	private String getLevel(int rowIndex)
+	protected java.lang.String getString(int index)
 	{
 		java.lang.String level="TRACE";
-		switch(rowIndex)
+		switch(index)
 		{
 			case 1:
 			{
@@ -104,7 +67,7 @@ public class LevelModel extends de.netsysit.model.table.EventHandlingSupport
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex)
 	{
 		if(columnIndex==1)
-			levelMap.put(getLevel(rowIndex),(java.lang.Boolean)aValue);
+			map.put(getString(rowIndex),(java.lang.Boolean)aValue);
 		TableModelEvent tme=new TableModelEvent(this,rowIndex);
 		fireTableChanged(tme);
 	}
