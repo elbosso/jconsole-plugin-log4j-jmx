@@ -31,45 +31,52 @@ public class PreferencesPart extends javax.swing.JPanel implements javax.swing.e
 	}
 	private void createActions()
 	{
-		selectAllAction=new javax.swing.AbstractAction("select all",new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("de/elbosso/ressources/gfx/eb/select all_48.png")))
+		try
 		{
-			@Override
-			public void actionPerformed(ActionEvent e)
+			selectAllAction = new javax.swing.AbstractAction("select all", new javax.swing.ImageIcon(de.netsysit.ui.image.DecoratedImageProducer.produceImage(de.netsysit.util.ResourceLoader.getImgResource("de/elbosso/ressources/gfx/eb/select all_48.png"), de.netsysit.util.ResourceLoader.getImgResource("content/drawable-mdpi/ic_select_all_black_36dp.png"))))
 			{
-				for(int i=0;i<t.getRowCount();++i)
+				@Override
+				public void actionPerformed(ActionEvent e)
 				{
-					if(t.getSelectionModel().isSelectedIndex(i))
-						t.setValueAt(Boolean.TRUE,i,1);
+					for (int i = 0; i < t.getRowCount(); ++i)
+					{
+						if (t.getSelectionModel().isSelectedIndex(i))
+							t.setValueAt(Boolean.TRUE, i, 1);
+					}
 				}
-			}
-		};
-		selectAllAction.setEnabled(false);
-		selectNoneAction=new javax.swing.AbstractAction("select none",new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("de/elbosso/ressources/gfx/eb/deselect all_48.png")))
+			};
+			selectAllAction.setEnabled(false);
+			selectNoneAction = new javax.swing.AbstractAction("select none", new javax.swing.ImageIcon(de.netsysit.ui.image.DecoratedImageProducer.produceImage(de.netsysit.util.ResourceLoader.getImgResource("de/elbosso/ressources/gfx/eb/deselect all_48.png"), de.netsysit.util.ResourceLoader.getImgResource("content/drawable-mdpi/ic_select_all_black_36dp.png"))))
+			{
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					for (int i = 0; i < t.getRowCount(); ++i)
+					{
+						if (t.getSelectionModel().isSelectedIndex(i))
+							t.setValueAt(Boolean.FALSE, i, 1);
+					}
+				}
+			};
+			selectNoneAction.setEnabled(false);
+			toggleSelectionAction = new javax.swing.AbstractAction("toggle selection", new javax.swing.ImageIcon(de.netsysit.ui.image.DecoratedImageProducer.produceImage(de.netsysit.util.ResourceLoader.getImgResource("de/elbosso/ressources/gfx/eb/toggle_selection_48.png"), de.netsysit.util.ResourceLoader.getImgResource("content/drawable-mdpi/ic_select_all_black_36dp.png"))))
+			{
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					for (int i = 0; i < t.getRowCount(); ++i)
+					{
+						if (t.getSelectionModel().isSelectedIndex(i))
+							t.setValueAt(((java.lang.Boolean) t.getValueAt(i, 1)).booleanValue() ? Boolean.FALSE : Boolean.TRUE, i, 1);
+					}
+				}
+			};
+			toggleSelectionAction.setEnabled(false);
+		}
+		catch(java.io.IOException ioexp)
 		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				for(int i=0;i<t.getRowCount();++i)
-				{
-					if(t.getSelectionModel().isSelectedIndex(i))
-						t.setValueAt(Boolean.FALSE,i,1);
-				}
-			}
-		};
-		selectNoneAction.setEnabled(false);
-		toggleSelectionAction=new javax.swing.AbstractAction("toggle selection",new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("de/elbosso/ressources/gfx/eb/toggle_selection_48.png")))
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				for(int i=0;i<t.getRowCount();++i)
-				{
-					if(t.getSelectionModel().isSelectedIndex(i))
-						t.setValueAt(((java.lang.Boolean)t.getValueAt(i,1)).booleanValue()?Boolean.FALSE:Boolean.TRUE,i,1);
-				}
-			}
-		};
-		toggleSelectionAction.setEnabled(false);
+			ioexp.printStackTrace();
+		}
 	}
 
 	@Override
