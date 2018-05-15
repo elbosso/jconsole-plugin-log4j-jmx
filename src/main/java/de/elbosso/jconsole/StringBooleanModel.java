@@ -18,7 +18,7 @@ public abstract class StringBooleanModel extends de.netsysit.model.table.EventHa
 	}
 	private void createActions()
 	{
-		selectAllAction=new javax.swing.AbstractAction("select all")
+		selectAllAction=new javax.swing.AbstractAction("select all",new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("de/elbosso/ressources/gfx/eb/select all_48.png")))
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -30,7 +30,7 @@ public abstract class StringBooleanModel extends de.netsysit.model.table.EventHa
 				fireTableChanged();
 			}
 		};
-		selectNoneAction=new javax.swing.AbstractAction("select none")
+		selectNoneAction=new javax.swing.AbstractAction("select none",new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("de/elbosso/ressources/gfx/eb/deselect all_48.png")))
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -42,7 +42,7 @@ public abstract class StringBooleanModel extends de.netsysit.model.table.EventHa
 				fireTableChanged();
 			}
 		};
-		toggleSelectionAction=new javax.swing.AbstractAction("toggle selection")
+		toggleSelectionAction=new javax.swing.AbstractAction("toggle selection",new javax.swing.ImageIcon(de.netsysit.util.ResourceLoader.getImgResource("de/elbosso/ressources/gfx/eb/toggle_selection_48.png")))
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)

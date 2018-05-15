@@ -71,6 +71,9 @@ public class Log4JJMXJConsolePlugin extends com.sun.tools.jconsole.JConsolePlugi
 			iconFallbacks.setProperty("de/netsysit/ressources/gfx/common/Color24.gif","editor/drawable-mdpi/ic_format_color_fill_black_48dp.png");
 			iconFallbacks.setProperty("de/netsysit/ressources/gfx/common/Proceed16.gif","navigation/drawable-mdpi/ic_check_black_24dp.png");
 			iconFallbacks.setProperty("de/netsysit/ressources/gfx/common/Cancel16.gif","navigation/drawable-mdpi/ic_cancel_black_24dp.png");
+			iconFallbacks.setProperty("de/elbosso/ressources/gfx/eb/select all_48.png","action/drawable-mdpi/ic_done_all_black_48dp.png");
+			iconFallbacks.setProperty("de/elbosso/ressources/gfx/eb/deselect all_48.png","content/drawable-mdpi/ic_clear_black_48dp.png");
+			iconFallbacks.setProperty("de/elbosso/ressources/gfx/eb/toggle_selection_48.png","action/drawable-mdpi/ic_swap_horiz_black_48dp.png");
 			de.netsysit.util.ResourceLoader.configure(iconFallbacks);
 		}
 		catch(java.io.IOException ioexp)
