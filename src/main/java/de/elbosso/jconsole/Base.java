@@ -76,26 +76,8 @@ abstract class Base extends javax.swing.JPanel implements javax.management.Notif
 				{
 					gpid=de.netsysit.ui.dialog.GeneralPurposeInfoDialog.create(Base.this,"Preferences");
 					preferencesPanel=new javax.swing.JPanel(new java.awt.BorderLayout());
-					javax.swing.JPanel levelContainer=new javax.swing.JPanel(new java.awt.BorderLayout());
-					javax.swing.JTable t=new javax.swing.JTable(levelModel);
-					levelContainer.add(new javax.swing.JScrollPane(t));
-					javax.swing.JToolBar tb=new javax.swing.JToolBar();
-					tb.setFloatable(false);
-					tb.add(levelModel.getSelectAllAction());
-					tb.add(levelModel.getSelectNoneAction());
-					tb.add(levelModel.getToggleSelectionAction());
-					levelContainer.add(tb,BorderLayout.NORTH);
-					preferencesPanel.add(levelContainer,BorderLayout.NORTH);
-					javax.swing.JPanel loggerContainer=new javax.swing.JPanel(new java.awt.BorderLayout());
-					t=new javax.swing.JTable(loggerModel);
-					loggerContainer.add(new javax.swing.JScrollPane(t));
-					tb=new javax.swing.JToolBar();
-					tb.setFloatable(false);
-					tb.add(loggerModel.getSelectAllAction());
-					tb.add(loggerModel.getSelectNoneAction());
-					tb.add(loggerModel.getToggleSelectionAction());
-					loggerContainer.add(tb,BorderLayout.NORTH);
-					preferencesPanel.add(loggerContainer);
+					preferencesPanel.add(new PreferencesPart(levelModel),BorderLayout.NORTH);
+					preferencesPanel.add(new PreferencesPart(loggerModel));
 				}
 				gpid.showDialog(preferencesPanel);
 			}
