@@ -11,10 +11,11 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/elbosso/jconsole-plugin-log4j-jmx/issues)
 [![GitHub contributors](https://img.shields.io/github/contributors/elbosso/jconsole-plugin-log4j-jmx.svg)](https://GitHub.com/elbosso/jconsole-plugin-log4j-jmx/graphs/contributors/)
 [![Github All Releases](https://img.shields.io/github/downloads/elbosso/jconsole-plugin-log4j-jmx/total.svg)](https://github.com/elbosso/jconsole-plugin-log4j-jmx)
+[![Website elbosso.github.io](https://img.shields.io/website-up-down-green-red/https/elbosso.github.io.svg)](https://elbosso.github.io/)
 
 ## What is it?
 
-Pluing for JConsole (also usable with VirtualVM) allowing to 
+Plugin for JConsole (also usable with VirtualVM) allowing to 
 receive JMX messages encapsulating Log4J 1.x log events and presenting
 their content to the user.
 
