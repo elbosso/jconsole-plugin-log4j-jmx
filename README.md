@@ -20,3 +20,5 @@ receive JMX messages encapsulating Log4J 1.x log events and presenting
 their content to the user.
 
 Works best with the Log4J appender introduced here: https://gist.github.com/elbosso/822c573d8670601dd630fa869f591cb0 
+
+Or if you're into log4j 2.x you could use the appender in this project: https://github.com/elbosso/Log4J2CustomJMXAppender
