@@ -4,6 +4,20 @@ public class Helper
 {
 	public static void main(java.lang.String[] args)
 	{
+		try
+		{
+			java.util.Properties iconFallbacks = new java.util.Properties();
+			java.io.InputStream is=de.netsysit.util.ResourceLoader.getResource("de/elbosso/ressources/data/icon_trans_material.properties").openStream();
+			iconFallbacks.load(is);
+			is.close();
+			de.netsysit.util.ResourceLoader.configure(iconFallbacks);
+		}
+		catch(java.io.IOException ioexp)
+		{
+			ioexp.printStackTrace();
+		}
+
+		de.netsysit.util.ResourceLoader.setSize(de.netsysit.util.ResourceLoader.IconSize.small);
 		TableView tableView=new TableView();
 		System.out.println("TableView created");
 		TextAreaView textAreaView=new TextAreaView();
