@@ -3,6 +3,30 @@
 Changelog of Git Changelog Maven plugin.
 
 ## Unreleased
+### No issue
+
+**maven central completely blocks http now**
+
+
+[61e4c572fdbed23](https://github.com/elbosso/jconsole-plugin-log4j-jmx/commit/61e4c572fdbed23) Jürgen Key *2020-01-24 17:41:30*
+
+**custom material icons now in useadded changelog**
+
+
+[d8a6bc08d87fc3c](https://github.com/elbosso/jconsole-plugin-log4j-jmx/commit/d8a6bc08d87fc3c) Jürgen Key *2019-10-04 06:17:29*
+
+**added changelog**
+
+
+[6f2fd0dad1d41c2](https://github.com/elbosso/jconsole-plugin-log4j-jmx/commit/6f2fd0dad1d41c2) Jürgen Key *2019-08-25 13:53:42*
+
+**Update README.md**
+
+
+[87585b8aa9c83f1](https://github.com/elbosso/jconsole-plugin-log4j-jmx/commit/87585b8aa9c83f1) Jürgen Key *2019-08-10 08:13:31*
+
+
+## refs/tags/1.0.0
 ### GitHub [#10](https://github.com/elbosso/jconsole-plugin-log4j-jmx/issues/10) add Filter for Log Levels for TextAreaView
 
 **fixes #10**

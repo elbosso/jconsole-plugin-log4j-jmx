@@ -40,49 +40,38 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 	<name>Log4J JMX JConsole Plugin (log4jjmx-jconsole)</name>
 	<url>https://elbosso.github.io</url>
 
-	<version>0.1.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<inceptionYear>2018</inceptionYear>
+    <scm>
+        <developerConnection>scm:git:https://github.com/elbosso/jconsole-plugin-log4j-jmx.git</developerConnection>
+      <tag>HEAD</tag>
+  </scm>
+
+	<properties>
+        <project.custom.encoding>UTF-8</project.custom.encoding>
+        <project.custom.java.version>11</project.custom.java.version>
+        <project.build.sourceEncoding>${project.custom.encoding}</project.build.sourceEncoding>
+        <project.build.outputEncoding>${project.custom.encoding}</project.build.outputEncoding>
+        <project.reporting.outputEncoding>${project.custom.encoding}</project.reporting.outputEncoding>
+        <project.main.class>Hello</project.main.class>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+		<app.name>hibernate-jconsole</app.name>
+      <project.scm.id>elbossos-github</project.scm.id>
+	</properties>
+
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.5.1</version>
-				</plugin>
-				<!--plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-dependency-plugin</artifactId>
-					<executions>
-						<execution>
-							<id>copy-dependencies</id>
-							<phase>prepare-package</phase>
-							<goals>
-								<goal>copy-dependencies</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>
-									${project.build.directory}/libs
-								</outputDirectory>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<configuration>
-						<archive>
-							<manifest>
-								<addClasspath>true</addClasspath>
-								<classpathPrefix>target/dependency</classpathPrefix>
-								<mainClass>
-									de.elbosso.webbrowser.WebBrowser
-								</mainClass>
-							</manifest>
-						</archive>
-					</configuration>
-				</plugin-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>${project.custom.java.version}</source>
+                        <!--target>${project.custom.java.version}</target-->
+                        <compilerVersion>${project.custom.java.version}</compilerVersion>
+                    </configuration>
+                </plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
@@ -110,6 +99,14 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 			</plugins>
 		</pluginManagement>
 		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <configuration>
+                    <preparationGoals>package assembly:single</preparationGoals>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -140,10 +137,6 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 			</plugin>
 		</plugins>
 	</build>
-	<properties>
-		<app.name>hibernate-jconsole</app.name>
-	</properties>
-
 	<repositories>
         <!--remote-->
 		<repository>
@@ -157,16 +150,6 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 			<url>https://elbosso.github.io/maven2</url>
 			<layout>default</layout>
 		</repository>
-        <!--local-->
-        <!--repository>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </releases>
-            <id>local-maven-repo</id>
-            <url>file:////home/elbosso/work/elbosso.github.io/maven2</url>
-        </repository-->
 		<repository>
 			<id>central</id>
 			<url>https://repo1.maven.org/maven2</url>
@@ -184,54 +167,29 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 	<dependencies>
 		<dependency>
 			<groupId>de.elbosso</groupId>
-			<artifactId>util</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>de.elbosso</groupId>
-			<artifactId>util_i18n</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>de.elbosso</groupId>
-			<artifactId>ui</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>de.elbosso</groupId>
-			<artifactId>ui_i18n</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>de.elbosso</groupId>
 			<artifactId>model</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>de.elbosso</groupId>
-			<artifactId>model_i18n</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>1.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.elbosso</groupId>
 			<artifactId>db_i18n</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>1.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.elbosso</groupId>
 			<artifactId>materialgfx</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>1.2.0</version>
 		</dependency>
         <dependency>
             <groupId>de.elbosso</groupId>
             <artifactId>data</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+			<version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.elbosso</groupId>
             <artifactId>custommaterialgfx</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+			<version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
 		<dependency>
@@ -260,71 +218,11 @@ WENN SIE AUF DIE MOEGLICHKEIT EINES SOLCHEN SCHADENS HINGEWIESEN WORDEN SIND.
 			<version>2.0b5</version>
 		</dependency>
     </dependencies>
-	<!--build>
-		<defaultGoal>package</defaultGoal>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
-						<encoding>UTF-8</encoding>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.2.1</version>
-				</plugin>
-
-				<plugin>
-					<artifactId>maven-shade-plugin</artifactId>
-					<version>1.4</version>
-				</plugin>
-
-				<plugin>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>2.1.2</version>
-				</plugin>
-
-				<plugin>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.1</version>
-				</plugin>
-
-				<plugin>
-					<artifactId>maven-site-plugin</artifactId>
-					<dependencies>
-						<dependency>
-							<groupId>org.tinyjee.dim</groupId>
-							<artifactId>doxia-include-macro</artifactId>
-							<version>1.1</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-
-		<plugins>
-			<plugin>
-				<artifactId>maven-source-plugin</artifactId>
-			</plugin>
-		</plugins>
-
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh</artifactId>
-				<version>1.0-beta-7</version>
-			</extension>
-		</extensions>
-	</build-->
+    <distributionManagement>
+        <repository>
+            <id>internal.repo</id>
+            <name>Internal repo</name>
+            <url>file:///tmp/</url>
+        </repository>
+    </distributionManagement>
 </project>
