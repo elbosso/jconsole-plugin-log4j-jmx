@@ -5,6 +5,11 @@ Changelog of Git Changelog Maven plugin.
 ## Unreleased
 ### No issue
 
+**automated maven release management**
+
+
+[15e711b3fba74e0](https://github.com/elbosso/jconsole-plugin-log4j-jmx/commit/15e711b3fba74e0) Jürgen Key *2020-12-23 09:36:40*
+
 **maven central completely blocks http now**
 
 
