@@ -5,6 +5,15 @@ Changelog of Git Changelog Maven plugin.
 ## Unreleased
 ### No issue
 
+**repository locations fixed**
+
+
+[2cf5487230ebfaf](https://github.com/elbosso/jconsole-plugin-log4j-jmx/commit/2cf5487230ebfaf) Jürgen Key *2021-03-07 07:27:57*
+
+
+## 1.0.0
+### No issue
+
 **automated maven release management**
 
 
