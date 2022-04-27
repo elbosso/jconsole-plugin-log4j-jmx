@@ -3,6 +3,14 @@
 Changelog of Git Changelog Maven plugin.
 
 ## Unreleased
+### GitHub [#26](https://github.com/elbosso/jconsole-plugin-log4j-jmx/issues/26) get rid of log4j and use the new bom dependency
+
+**re #26**
+
+
+[ad02b50791f5f8a](https://github.com/elbosso/jconsole-plugin-log4j-jmx/commit/ad02b50791f5f8a) Jürgen Key *2022-04-27 15:25:17*
+
+
 ### No issue
 
 **change of repository location for de.elbosso artifacts**
