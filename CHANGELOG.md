@@ -5,6 +5,11 @@ Changelog of Git Changelog Maven plugin.
 ## Unreleased
 ### No issue
 
+**change of repository location for de.elbosso artifacts**
+
+
+[dd58badcc972386](https://github.com/elbosso/jconsole-plugin-log4j-jmx/commit/dd58badcc972386) Jürgen Key *2021-09-12 09:16:47*
+
 **repository locations fixed**
 
 

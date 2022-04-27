@@ -37,7 +37,7 @@ class TextAreaView extends Base
 
 		doc=new org.syntax.jedit.SyntaxDocument(styles);
 		ed.setDocument(doc);
-		doc.setTokenMarker(new org.syntax.jedit.tokenmarker.Log4jTokenMarker());
+		doc.setTokenMarker(new org.syntax.jedit.tokenmarker.LoggngTokenMarker());
 		ed.setEditable(false);
 		add(ed.getTextField());
 		ed.getToggleBookmarkAction().putValue(Action.SMALL_ICON,(de.netsysit.util.ResourceLoader.getIcon("toolbarButtonGraphics/general/Bookmarks24.gif")));

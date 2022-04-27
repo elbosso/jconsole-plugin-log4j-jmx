@@ -1,6 +1,6 @@
 package de.elbosso.jconsole;
 
-import org.apache.log4j.Level;
+import ch.qos.logback.classic.Level;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
